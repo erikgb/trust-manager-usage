@@ -1,0 +1,21 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ssl-poke
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          image: eclipse-temurin:11
+          command: ["java",  "/app/SSLPoke.java", "www.vg.no", "443"]
+          volumeMounts:
+            - name: app-src
+              mountPath: /app
+      restartPolicy: Never
+      volumes:
+        - name: app-src
+          configMap:
+            name: ssl-poke
+  backoffLimit: 0
