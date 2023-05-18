@@ -1,0 +1,8 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: trust-manager-usage-server
+resources:
+  - certificate.yaml
+  - deployment.yaml
+  - namespace.yaml

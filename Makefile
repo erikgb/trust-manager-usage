@@ -5,3 +5,7 @@ deploy-infra:
 	# TODO: Using beta version for now to get access to trust-manager JKS feature
 	helm upgrade -i -n cert-manager trust-manager jetstack/trust-manager --version 0.5.0-beta.1 --wait
 	kubectl apply -k deploy/infra/
+
+.PHONY: deploy-server
+deploy-server:
+	kubectl apply -k deploy/server/
