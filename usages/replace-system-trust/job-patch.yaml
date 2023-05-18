@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ssl-poke
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          # I was unable to make Java accept the overridden system truststore, so verifying with openssl
+          command: [ "bash", "-c", "echo | openssl s_client -connect echo.trust-manager-usage.svc:443 2>/dev/null | grep 'Verification: OK'" ]
+          # command: [ "bash", "-c", "sleep 1000000" ]
+          volumeMounts:
+            - name: trust-bundle
+              mountPath: /etc/ssl/certs
+              readOnly: true
+            # Openssl needs special care when trying to override the system truststore
+            # See https://www.madboa.com/geek/openssl/#what-certificate-authorities-does-openssl-recognize for more information
+            - name: openssl-trust-bundle
+              mountPath: /usr/lib/ssl/cert.pem
+              subPath: trust-bundle.pem
+              readOnly: true
+      volumes:
+        - name: trust-bundle
+          configMap:
+            name: my-selfsigned-ca
+            items:
+              - key: trust-bundle.pem
+                path: ca-certificates.crt
+        - name: openssl-trust-bundle
+          configMap:
+            name: my-selfsigned-ca

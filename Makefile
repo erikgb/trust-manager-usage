@@ -16,3 +16,11 @@ deploy-app-src:
 
 .PHONY: deploy
 deploy: deploy-infra deploy-server deploy-app-src
+
+.PHONY: create-jobs
+create-jobs:
+	kubectl create -k usages/all/
+
+.PHONY: delete-jobs
+delete-jobs:
+	kubectl delete --ignore-not-found -k usages/all/
