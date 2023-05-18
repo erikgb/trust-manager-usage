@@ -1,7 +1,8 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+nameSuffix: -replace-java-trust
 resources:
   - ../base
-  - ../replace-java-trust
-  - ../replace-system-trust
+patches:
+  - path: job-patch.yaml

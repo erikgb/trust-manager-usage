@@ -1,0 +1,20 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ssl-poke
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          # command: [ "bash", "-c", "sleep 1000000" ]
+          volumeMounts:
+            - name: trust-bundle
+              mountPath: /opt/java/openjdk/lib/security/cacerts
+              subPath: trust-bundle.jks
+              readOnly: true
+      volumes:
+        - name: trust-bundle
+          configMap:
+            name: my-selfsigned-ca
