@@ -6,3 +6,17 @@ resources:
   - certificate.yaml
   - deployment.yaml
   - namespace.yaml
+  - service.yaml
+replacements:
+  - source:
+      kind: Service
+      fieldPath: metadata.namespace
+    targets:
+      - select:
+          kind: Certificate
+        fieldPaths:
+          - spec.commonName
+          - spec.dnsNames.*
+        options:
+          delimiter: '.'
+          index: 1
