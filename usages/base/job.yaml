@@ -9,7 +9,7 @@ spec:
       containers:
         - name: app
           image: eclipse-temurin:11
-          command: ["java",  "/app/SSLPoke.java", "www.vg.no", "443"]
+          command: ["java",  "/app/SSLPoke.java", "echo.trust-manager-usage.svc", "443"]
           volumeMounts:
             - name: app-src
               mountPath: /app
@@ -17,5 +17,5 @@ spec:
       volumes:
         - name: app-src
           configMap:
-            name: ssl-poke
+            name: ssl-poke-src
   backoffLimit: 0

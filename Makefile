@@ -9,3 +9,10 @@ deploy-infra:
 .PHONY: deploy-server
 deploy-server:
 	kubectl apply -k deploy/server/
+
+.PHONY: deploy-app-src
+deploy-app-src:
+	kubectl apply -k deploy/app-src/
+
+.PHONY: deploy
+deploy: deploy-infra deploy-server deploy-app-src
