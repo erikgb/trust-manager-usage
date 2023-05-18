@@ -1,0 +1,22 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ssl-poke
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          # command: [ "bash", "-c", "sleep 1000000" ]
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Djavax.net.ssl.trustStore=/var/run/configmaps/cert-manager.io/trust/trust-bundle.jks"
+          volumeMounts:
+            - name: trust-bundle
+              mountPath: /var/run/configmaps/cert-manager.io/trust
+              readOnly: true
+      volumes:
+        - name: trust-bundle
+          configMap:
+            name: my-selfsigned-ca
